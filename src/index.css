@@ -1,0 +1,10 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.colorSel{
+    height: 24px;
+    width: 24px;
+    border-radius: 100%;
+    border: solid rgb(211, 211, 211) 1px;
+}

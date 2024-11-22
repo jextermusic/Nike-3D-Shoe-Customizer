@@ -1,0 +1,118 @@
+import React, { useEffect, useRef } from 'react';
+import {
+  Engine,
+  Scene,
+  useBeforeRender,
+  useClick,
+  useHover,
+  useScene,
+} from 'react-babylonjs';
+import '@babylonjs/loaders';
+import { Vector3, Color3, SceneLoader, Color4 } from '@babylonjs/core';
+import * as BABYLON from 'babylonjs';
+import { Inspector } from '@babylonjs/inspector';
+import { useOverlayColor } from '../Context/overlayColorContext';
+
+const NewScene = () => {
+  const DefaultScale = new Vector3(1, 1, 1);
+  const BiggerScale = new Vector3(1.25, 1.25, 1.25);
+
+  const {
+    trigger_1,
+    trigger_2,
+    trigger_3,
+    trigger_4,
+    trigger_5,
+    trigger_6,
+    trigger_7,
+    trigger_8,
+    trigger_9,
+    FabricToeGuard,
+    Vamp,
+    Tongue,
+    Liner,
+    Swoosh,
+    Midsole,
+    AirBubble,
+    Laces,
+    Heal,
+  } = useOverlayColor();
+
+  const ShoeModel = () => {
+    const scene = useScene();
+
+    useEffect(() => {
+      SceneLoader.ImportMesh(
+        '',
+        '/src/assets/',
+        'jordanscompressed.glb',
+        scene,
+        (meshes) => {
+          const meshUpdates = [
+            { index: 15, trigger: trigger_1, color: FabricToeGuard },
+            { index: 16, trigger: trigger_1, color: FabricToeGuard },
+            { index: 17, trigger: trigger_2, color: Vamp },
+            { index: 18, trigger: trigger_2, color: Vamp },
+            { index: 40, trigger: trigger_3, color: Tongue },
+            { index: 39, trigger: trigger_3, color: Tongue },
+            { index: 37, trigger: trigger_4, color: Laces },
+            { index: 38, trigger: trigger_4, color: Laces },
+            { index: 14, trigger: trigger_5, color: AirBubble },
+            { index: 13, trigger: trigger_5, color: AirBubble },
+            { index: 31, trigger: trigger_8, color: Swoosh },
+            { index: 32, trigger: trigger_8, color: Swoosh },
+            { index: 10, trigger: trigger_6, color: Liner },
+            { index: 9, trigger: trigger_6, color: Liner },
+            { index: 46, trigger: trigger_7, color: Midsole },
+            { index: 45, trigger: trigger_7, color: Midsole },
+            { index: 1, trigger: trigger_9, color: Heal },
+            { index: 2, trigger: trigger_9, color: Heal },
+          ];
+
+          meshUpdates.forEach(({ index, trigger, color }) => {
+            const mesh = meshes[index];
+            if (mesh) {
+              mesh.renderOverlay = trigger;
+              mesh.overlayColor = new BABYLON.Color3(color.r / 255, color.g / 255, color.b / 255);
+              
+            }
+          });
+        }
+      );
+    }, [
+      scene,
+      trigger_1, trigger_2, trigger_3, trigger_4,
+      trigger_5, trigger_6, trigger_7, trigger_8, trigger_9,
+      FabricToeGuard, Vamp, Tongue, Liner, Swoosh, Midsole, AirBubble, Laces, Heal,
+    ]);
+  };
+
+  return (
+    <div className="h-full w-full">
+      <Engine antialias adaptToDeviceRatio canvasId="babylonJS">
+        <Scene clearColor={new Color4(0.5, 0.5, 0.5, 0)}>
+          <arcRotateCamera
+            name="camera1"
+            target={Vector3.Zero()}
+            alpha={Math.PI / 10}
+            beta={Math.PI / 3}
+            radius={10}
+          />
+          <hemisphericLight
+            name="light1"
+            intensity={0.7}
+            direction={Vector3.Left()}
+          />
+          <hemisphericLight
+            name="light1"
+            intensity={0.7}
+            direction={Vector3.Up()}
+          />
+          <ShoeModel />
+        </Scene>
+      </Engine>
+    </div>
+  );
+};
+
+export default NewScene;
