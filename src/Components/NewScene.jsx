@@ -65,7 +65,7 @@ const NewScene = () => {
     
             SceneLoader.ImportMesh(
                 "",
-                "/src/assets/",
+                "/src/assets/models",
                 "jordanscompressed.glb",
                 scene,
                 function(meshes) {
